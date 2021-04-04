@@ -1,0 +1,17 @@
+{
+    "name": "root/chat",
+    "description": "Chat app",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Przemar5",
+            "email": "przemar5@o2.pl"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "app": "App\\"
+        }
+    }
+}
