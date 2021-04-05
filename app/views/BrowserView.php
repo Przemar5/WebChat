@@ -9,12 +9,21 @@ use App\Views\View;
 class BrowserView extends View
 {
 	private string $layoutPath;
+	private string $templatesDir;
 	private array $sections = [];
 	private string $outputBuffer = '';
 	private string $currentSection;
 
+	public function __construct(string $layoutPath, string $templatesDir)
+	{
+		$this->layoutPath = $layoutPath;
+		$this->templatesDir = $templatesDir;
+	}
+
 	public function render(string $path, array $args = []): void
 	{
+		$fullPath = $this->templatesDir . $path
+
 		if (!file_exists($this->layoutPath)) {
 			throw new \Exception(
 				"File '" . $this->layoutPath . "' is missing.");
@@ -23,18 +32,18 @@ class BrowserView extends View
 			throw new \Exception(
 				"File '" . $this->layoutPath . "' is not readable.");
 		}
-		elseif (!file_exists($this->layoutPath)) {
+		elseif (!file_exists($fullPath)) {
 			throw new \Exception(
-				"File '" . $this->layoutPath . "' is missing.");
+				"File '" . $fullPath . "' is missing.");
 		}
-		elseif (!is_readable($this->layoutPath)) {
+		elseif (!is_readable($fullPath)) {
 			throw new \Exception(
-				"File '" . $this->layoutPath . "' is not readable.");
+				"File '" . $fullPath . "' is not readable.");
 		}
 
 		extract($args);
 		include_once $this->layoutPath;
-		include_once $path;
+		include_once $fullPath;
 	}
 
 	private function startSection(string $name): void

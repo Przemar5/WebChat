@@ -15,6 +15,6 @@ class HomeController extends Controller
 
 	public function homePage()
 	{
-		$this->view->render();
+		$this->view->render(BASE_DIR . '/templates/pages/home.php');
 	}
 }

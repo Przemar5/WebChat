@@ -41,3 +41,12 @@ set_exception_handler('exceptionHandler');
 
 define('BASE_DIR', __DIR__);
 // define('BASE_URI', );
+
+
+try {
+	
+}
+catch (\Exception $e) {
+	exceptionHandler($e);
+	die;
+}

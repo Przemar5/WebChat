@@ -7,8 +7,10 @@
 		<title>Chat</title>
 
 		<style type="text/css"></style>
+
+		<?= $this->getSection('head'); ?>
 	</head>
 	<body>
-
+		<?= $this->getSection('body'); ?>
 	</body>
 </html>

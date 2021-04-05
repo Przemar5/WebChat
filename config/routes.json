@@ -1,0 +1,7 @@
+[
+	{
+		"pattern": "home",
+		"method": "POST",
+		"controller": "HomeController->homePage()"
+	}
+]
