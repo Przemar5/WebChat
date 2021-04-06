@@ -4,10 +4,16 @@ declare(strict_types = 1);
 
 require_once 'functions.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('register_globals', '0');
+
+use App\Routing\RoutingFacade;
+
 spl_autoload_register(function ($class) {
 	$tokens = explode('\\', $class);
 	$classname = array_pop($tokens);
-	$tokens = array_map('lowercase', $tokens);
+	$tokens = array_map('strtolower', $tokens);
 	array_push($tokens, $classname);
 	$path = implode(DIRECTORY_SEPARATOR, $tokens) . '.php';
 
@@ -18,7 +24,7 @@ spl_autoload_register(function ($class) {
 });
 
 
-function exceptionHandler(\Exception $e): void
+function exceptionHandler($e): void
 {
 	printf("%s was thrown in '%s', line %d: '%s'\r\n",
 		get_class($e), 
@@ -44,7 +50,7 @@ define('BASE_DIR', __DIR__);
 
 
 try {
-	
+	RoutingFacade::route("text/123");
 }
 catch (\Exception $e) {
 	exceptionHandler($e);

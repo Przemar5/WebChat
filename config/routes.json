@@ -3,5 +3,10 @@
 		"pattern": "home",
 		"method": "POST",
 		"controller": "HomeController->homePage()"
+	},
+	{
+		"pattern": "test/(?<id>\\d+)",
+		"method": "POST",
+		"controller": "HomeController->homePage()"
 	}
 ]
