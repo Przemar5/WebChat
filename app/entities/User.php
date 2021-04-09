@@ -8,8 +8,12 @@ use App\Entities\Entity;
 
 class User extends Entity
 {
-	public function __construct()
-	{
-		//
-	}
+	public final int $id;
+	public string $login;
+	public string $password;
+	public string $email;
+	public final string $createdOn;
+	public string $lastLogin;
+	public boolean $verifid = false;
+	public boolean $deleted = false;
 }

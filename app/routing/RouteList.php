@@ -13,6 +13,17 @@ class RouteList implements ArrayAccess
         $this->items = $items;
     }
 
+    public function getFirstMatchByUriMethod(
+        string $uri, 
+        string $method = 'GET'
+    ): Route
+    {
+        foreach ($this->items as $route) {
+            if ($route->matchByUriAndMethod($uri, $method))
+                return $route;
+        }
+    }
+
     // ArrayAccess methods
 
     public function offsetSet($offset, $value): void

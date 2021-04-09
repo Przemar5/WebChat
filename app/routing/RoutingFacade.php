@@ -6,16 +6,40 @@ namespace App\Routing;
 
 class RoutingFacade
 {
-	public static function route(string $uri)
+	public static function getRouteByName(string $name): Route
 	{
-		$uri = 'test/123';
 		$routes = self::getRoutes();
 
 		foreach ($routes as $route) {
-			$pattern = addcslashes($route->pattern, '/');
-			echo preg_match('/^' . $pattern . '$/u', $uri);
+			if ($route->getName() === $name)
+				return $route;
 		}
 	}
+
+	public static function getRouteByUriAndMethod(
+		string $uri, 
+		string $method
+	)
+	{
+		$routes = self::getRoutes();
+
+		foreach ($routes as $route) {
+			if ($route->matchByUriAndMethod($uri, $method))
+				return $route;
+		}
+	}
+
+	// public static function route(string $name, array $args = [])
+	// {
+	// 	$routes = self::getRoutes();
+
+	// 	foreach ($routes as $route) {
+	// 		if ($route->matchByUriAndMethod($uri, $method)) {
+	// 			$uri = $route->getPreparedUri($args);
+	// 			// Route
+	// 		}
+	// 	}
+	// }
 	
 	public static function getRoutes(): array
 	{
@@ -32,6 +56,6 @@ class RoutingFacade
 		$file = file_get_contents($filename);
 		$data = json_decode($file);
 
-		return $data;
+		return array_map(fn($r) => new Route($r), $data);
 	}
 }

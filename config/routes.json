@@ -1,12 +1,20 @@
 [
 	{
-		"pattern": "home",
-		"method": "POST",
-		"controller": "HomeController->homePage()"
+		"pattern": "/test",
+		"method": "GET",
+		"name": "test",
+		"class": "TestController.page",
+	},
+	{
+		"pattern": "/home",
+		"method": "GET",
+		"name": "home",
+		"controller": "HomeController.homePage",
+		"access": ["GUEST"]
 	},
 	{
 		"pattern": "test/(?<id>\\d+)",
 		"method": "POST",
-		"controller": "HomeController->homePage()"
+		"controller": "HomeController.homePage"
 	}
 ]

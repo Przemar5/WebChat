@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types = 1);
-
-namespace App\Routing;
+namespace Meetee\Libs\Http\Routing\Data;
 
 class Route
 {
@@ -31,8 +29,7 @@ class Route
 	{
 		$pattern = $this->getUriPatternRegex();
 
-		return preg_match($pattern.'u', $uri) && 
-			strcasecmp($this->method, $method) === 0;
+		return preg_match($pattern.'u', $uri) && $this->method === $method;
 	}
 
 	protected function getUriPatternRegex(): string

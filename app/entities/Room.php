@@ -8,8 +8,6 @@ use App\Entities\Entity;
 
 class Room extends Entity
 {
-	public function __construct()
-	{
-		//
-	}
+	public final int $id;
+	public string $name;
 }

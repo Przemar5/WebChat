@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Routing\Routers;
+declare(strict_types = 1);
 
-use App\Routing\Route;
+namespace App\Routing\Routers;
 
 abstract class Router
 {
-	public function __construct()
-	{
-		//
-	}
+	abstract public function route(): void;
 
-	abstract public function route(Route $route): void;
+	abstract public function redirect(string $name): void;
 }
