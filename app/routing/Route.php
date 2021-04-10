@@ -8,21 +8,21 @@ class Route
 {
 	private string $pattern;
 	private string $method;
-	private string $className;
+	private $callback;
 	private ?string $name;
 	private array $access;
 
 	public function __construct(
 		string $pattern,
 		string $method,
-		string $className,
+		$callback,
 		?string $name,
 		?array $access = []
 	)
 	{
 		$this->pattern = $pattern;
 		$this->method = $method;
-		$this->className = $className;
+		$this->callback = $callback;
 		$this->name = $name;
 		$this->access = $access;
 	}
@@ -108,9 +108,9 @@ class Route
 		return $this->method;
 	}
 	
-	public function getClassName(): string
+	public function getCallback()
 	{
-		return $this->className;
+		return $this->callback;
 	}
 	
 	public function getName(): ?string

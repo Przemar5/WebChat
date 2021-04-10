@@ -8,13 +8,9 @@ use App\Controllers\Controller;
 
 class HomeController extends Controller
 {
-	public function __construct(View $view)
-	{
-		parent::__construct($view);
-	}
-
 	public function homePage()
 	{
-		$this->view->render(BASE_DIR . '/templates/pages/home.php');
+		echo 'home';
+		$this->view->render('pages/home.php');
 	}
 }

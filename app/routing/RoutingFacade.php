@@ -11,8 +11,9 @@ class RoutingFacade
 		$routes = self::getRoutes();
 
 		foreach ($routes as $route) {
-			if ($route->getName() === $name)
+			if ($route->getName() === $name) {
 				return $route;
+			}
 		}
 	}
 
@@ -24,8 +25,9 @@ class RoutingFacade
 		$routes = self::getRoutes();
 
 		foreach ($routes as $route) {
-			if ($route->matchByUriAndMethod($uri, $method))
+			if ($route->matchByUriAndMethod($uri, $method)) {
 				return $route;
+			}
 		}
 	}
 
@@ -54,8 +56,23 @@ class RoutingFacade
 				"File '" . $filename . "' is not readable.");
 		}
 		$file = file_get_contents($filename);
-		$data = json_decode($file);
+		$data = json_decode($file, true);
+		$result = [];
 
-		return array_map(fn($r) => new Route($r), $data);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new \Exception("Error decoding json file '$filename'.");
+		}
+
+		foreach ($data as $d) {
+			$result[] = new Route(
+				$d['pattern'],
+				$d['method'],
+				$d['callback'],
+				$d['name'],
+				$d['access'] ?? []
+			);
+		}
+
+		return $result;
 	}
 }

@@ -3,18 +3,19 @@
 		"pattern": "/test",
 		"method": "GET",
 		"name": "test",
-		"class": "TestController.page",
+		"callback": "TestController.page"
 	},
 	{
-		"pattern": "/home",
+		"pattern": "/",
 		"method": "GET",
 		"name": "home",
-		"controller": "HomeController.homePage",
+		"callback": "HomeController.homePage",
 		"access": ["GUEST"]
 	},
 	{
 		"pattern": "test/(?<id>\\d+)",
 		"method": "POST",
-		"controller": "HomeController.homePage"
+		"name": "test",
+		"callback": "HomeController.homePage"
 	}
 ]

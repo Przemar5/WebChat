@@ -23,6 +23,17 @@ spl_autoload_register(function ($class) {
 	require_once $path;
 });
 
+function dd($text)
+{
+	if (is_string($text)) {
+		die($text);
+	}
+	else {
+		echo "<pre>";
+		var_dump($text);
+		die;
+	}
+}
 
 function exceptionHandler($e): void
 {
@@ -46,13 +57,13 @@ function exceptionHandler($e): void
 set_exception_handler('exceptionHandler');
 
 define('BASE_DIR', __DIR__);
-// define('BASE_URI', );
-
+define('BASE_URI', 'http://localhost/projects/Chat');
 
 try {
-	RoutingFacade::route("text/123");
+	$router = new \App\Routing\Routers\DefaultRouter();
+	$router->route();
 }
 catch (\Exception $e) {
 	exceptionHandler($e);
-	die;
+	die($e->getMessage());
 }

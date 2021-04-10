@@ -14,23 +14,24 @@ class BrowserView extends View
 	private string $outputBuffer = '';
 	private string $currentSection;
 
-	public function __construct(string $layoutPath, string $templatesDir)
+	public function __construct(string $templatesDir, string $layoutPath)
 	{
-		$this->layoutPath = $layoutPath;
-		$this->templatesDir = $templatesDir;
+		$this->templatesDir = rtrim($templatesDir, '/') . '/';
+		$this->layoutPath = trim($layoutPath, '/');
 	}
 
 	public function render(string $path, array $args = []): void
 	{
-		$fullPath = $this->templatesDir . $path
+		$fullPath = $this->templatesDir . $path;
+		$layoutPath = $this->templatesDir . $this->layoutPath;
 
-		if (!file_exists($this->layoutPath)) {
+		if (!file_exists($layoutPath)) {
 			throw new \Exception(
-				"File '" . $this->layoutPath . "' is missing.");
+				"File '" . $layoutPath . "' is missing.");
 		}
-		elseif (!is_readable($this->layoutPath)) {
+		elseif (!is_readable($layoutPath)) {
 			throw new \Exception(
-				"File '" . $this->layoutPath . "' is not readable.");
+				"File '" . $layoutPath . "' is not readable.");
 		}
 		elseif (!file_exists($fullPath)) {
 			throw new \Exception(
@@ -42,7 +43,7 @@ class BrowserView extends View
 		}
 
 		extract($args);
-		include_once $this->layoutPath;
+		include_once $layoutPath;
 		include_once $fullPath;
 	}
 
@@ -57,7 +58,7 @@ class BrowserView extends View
 		$this->sections[$this->currentSection] = ob_get_clean();
 	}
 
-	private function getSection(string $name): void
+	private function getSection(string $name): string
 	{
 		if (!isset($this->sections[$name])) {
 			throw new \Exception("Section '$name' is missing.");
