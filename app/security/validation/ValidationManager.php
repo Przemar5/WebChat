@@ -13,7 +13,12 @@ class ValidationManager
 		$this->validators = [
 			'isset' 	=> fn($v) => isset($v),
 			'required' 	=> fn($v) => !empty($v),
-			// 'nullable'	=> fn($v) => (empty($v)) ? break 1 : true,
+			'nullable'	=> function ($v) {
+				if (empty($v))
+					throw new \Exception('');
+				else
+					return true;
+			},
 			'string' 	=> fn($v) => is_string($v),
 			'number' 	=> fn($v) => is_numeric($v),
 			'array' 	=> fn($v) => is_array($v),
@@ -69,14 +74,20 @@ class ValidationManager
 		$this->errors = [];
 
 		foreach ($this->schema as $key => $data) {
-			foreach ($data as $d) {
-				$args = $d;
-				array_unshift($args[1], $values[$key] ?? null);
-				array_unshift($args, $key);
-				
-				if (!call_user_func_array([$this, 'validatorTemplate'], $args)) {
-					break 1;
+			try {
+				foreach ($data as $d) {
+					$args = $d;
+					array_unshift($args[1], $values[$key] ?? null);
+					array_unshift($args, $key);
+					
+					if (!call_user_func_array(
+						[$this, 'validatorTemplate'], $args)) {
+						break 1;
+					}
 				}
+			}
+			catch (\Exception $e) {
+				break 1;
 			}
 		}
 		return ($this->errors === []) ? true : false;
