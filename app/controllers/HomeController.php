@@ -10,7 +10,6 @@ class HomeController extends Controller
 {
 	public function homePage()
 	{
-		echo 'home';
-		$this->view->render('pages/home.php');
+		$this->view->render('pages/home');
 	}
 }

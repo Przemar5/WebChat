@@ -12,18 +12,26 @@ class BrowserView extends View
 	private string $templatesDir;
 	private array $sections = [];
 	private string $outputBuffer = '';
-	private string $currentSection;
+	private ?string $currentSection = null;
+	private string $extension;
 
-	public function __construct(string $templatesDir, string $layoutPath)
+	public function __construct(
+		string $templatesDir, 
+		string $layoutPath, 
+		string $extension
+	)
 	{
 		$this->templatesDir = rtrim($templatesDir, '/') . '/';
 		$this->layoutPath = trim($layoutPath, '/');
+		$this->extension = $extension;
 	}
 
 	public function render(string $path, array $args = []): void
 	{
-		$fullPath = $this->templatesDir . $path;
-		$layoutPath = $this->templatesDir . $this->layoutPath;
+		$fullPath = $this->templatesDir . ltrim($path, '/') . 
+			'.' . $this->extension;
+		$layoutPath = $this->templatesDir . $this->layoutPath . 
+			'.' . $this->extension;
 
 		if (!file_exists($layoutPath)) {
 			throw new \Exception(
@@ -43,8 +51,8 @@ class BrowserView extends View
 		}
 
 		extract($args);
-		include_once $layoutPath;
 		include_once $fullPath;
+		include_once $layoutPath;
 	}
 
 	private function startSection(string $name): void
@@ -55,13 +63,20 @@ class BrowserView extends View
 
 	private function endSection(): void
 	{
+		if (is_null($this->currentSection)) {
+			throw new \Exception("Any section didn't started.");
+		}
 		$this->sections[$this->currentSection] = ob_get_clean();
+		$this->currentSection = null;
 	}
 
 	private function getSection(string $name): string
 	{
 		if (!isset($this->sections[$name])) {
 			throw new \Exception("Section '$name' is missing.");
+		}
+		if (!is_string($this->sections[$name])) {
+			throw new \Exception("Section '$name' must be string.");
 		}
 		return $this->sections[$name];
 	}

@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
 	login VARCHAR(255) NOT NULL,
@@ -9,11 +10,13 @@ CREATE TABLE users (
 	deleted BOOLEAN DEFAULT FALSE
 );
 
+DROP TABLE IF EXISTS roles;
 CREATE TABLE roles (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) UNIQUE NOT NULL
 );
 
+DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
 	user_id INT NOT NULL,
 	role_id INT NOT NULL,
@@ -22,11 +25,13 @@ CREATE TABLE user_role (
 	FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
+DROP TABLE IF EXISTS rooms;
 CREATE TABLE rooms (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) NOT NULL
 );
 
+DROP TABLE IF EXISTS messages;
 CREATE TABLE messages (
 	id SERIAL PRIMARY KEY,
 	content VARCHAR(255) NOT NULL,
@@ -37,8 +42,18 @@ CREATE TABLE messages (
 	FOREIGN KEY (room_id) REFERENCES rooms (id)
 );
 
+DROP TABLE IF EXISTS tokens;
+CREATE TABLE tokens (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	value VARCHAR(255) NOT NULL,
+	expiry TIMESTAMP NOT NULL,
+	user_id INT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
 INSERT INTO roles (name) 
-VALUES ('USER'), ('ADMIN'), ('OWNER');
+VALUES ('USER'), ('VERIFIED'), ('ADMIN'), ('OWNER');
 
 INSERT INTO rooms (name) 
 VALUES ('General');

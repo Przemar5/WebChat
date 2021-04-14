@@ -1,11 +1,5 @@
 [
 	{
-		"pattern": "/test",
-		"method": "GET",
-		"name": "test",
-		"callback": "TestController.page"
-	},
-	{
 		"pattern": "/",
 		"method": "GET",
 		"name": "home",
@@ -13,9 +7,24 @@
 		"access": ["GUEST"]
 	},
 	{
-		"pattern": "test/(?<id>\\d+)",
+		"pattern": "/register",
+		"method": "GET",
+		"name": "registration_page",
+		"callback": "Auth\\RegistrationController.page",
+		"access": ["GUEST"]
+	},
+	{
+		"pattern": "/register",
 		"method": "POST",
-		"name": "test",
-		"callback": "HomeController.homePage"
+		"name": "registration_process",
+		"callback": "Auth\\RegistrationController.process",
+		"access": ["GUEST"]
+	},
+	{
+		"pattern": "register/(?<id>\\d+)",
+		"method": "GET",
+		"name": "register",
+		"callback": "RegistrationController.page",
+		"access": ["GUEST"]
 	}
 ]

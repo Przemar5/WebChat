@@ -22,7 +22,8 @@ class ControllerFactory
 	{
 		$view = new BrowserView(
 			BASE_DIR . '/public/templates/',
-			'layouts/default.php'
+			'layouts/default',
+			'php'
 		);
 		[$controller, $method] = explode('.', $controllerDotMethod);
 		$controller = '\\App\\Controllers\\' . $controller;
