@@ -8,6 +8,10 @@ Registration
 
 <form method="POST">
 	<label>
+		Login
+		<input type="text" name="login" value="<?= $_POST['login'] ?? ''; ?>">
+	</label>
+	<label>
 		Email
 		<input type="email" name="email" value="<?= $_POST['email'] ?? ''; ?>">
 	</label>

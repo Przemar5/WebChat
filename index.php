@@ -59,6 +59,16 @@ set_exception_handler('exceptionHandler');
 define('BASE_DIR', __DIR__);
 define('BASE_URI', 'http://localhost/projects/Chat');
 
+// $table = App\Database\TableFactory::create('users');
+// $user = new App\Entities\User();
+// $user->login = 'test';
+// $user->email = 'test@email.com';
+// $user->password = 'password';
+// $user->created_on = '2021-04-15 02:15:30';
+// $user->last_login = '2021-04-15 02:15:30';
+
+// $table->save($user);
+
 try {
 	$router = new \App\Routing\Routers\DefaultRouter();
 	$router->route();

@@ -1,8 +1,10 @@
 <?php
 
-namespace Meetee\Libs\Database;
+declare(strict_types = 1);
 
-use Meetee\Libs\Database\Query_builders\QueryBuilderTemplate;
+namespace App\Database;
+
+use App\Database\Query_builders\QueryBuilderTemplate;
 
 abstract class DatabaseTemplate
 {
@@ -24,7 +26,7 @@ abstract class DatabaseTemplate
 		);
 
 		$user = $this->getDetailOrThrowException(
-			$connectionDetails, 'user', 'Username is missing');
+			$connectionDetails, 'username', 'Username is missing');
 		$password = $this->getDetailOrThrowException(
 			$connectionDetails, 'password', 'Password is missing');
 
@@ -37,7 +39,7 @@ abstract class DatabaseTemplate
 		array $connectionDetails = [], 
 		string $detail, 
 		string $msg
-	): string
+	)
 	{
 		if (!isset($connectionDetails[$detail]))
 			throw new \Exception($msg);

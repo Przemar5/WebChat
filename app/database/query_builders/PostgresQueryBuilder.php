@@ -1,8 +1,10 @@
 <?php
 
-namespace Meetee\Libs\Database\Query_builders;
+declare(strict_types = 1);
 
-use Meetee\Libs\Database\Query_builders\QueryBuilderTemplate;
+namespace App\Database\Query_builders;
+
+use App\Database\Query_builders\QueryBuilderTemplate;
 
 class PostgresQueryBuilder extends QueryBuilderTemplate
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace Meetee\Libs\Database\Query_builders;
+declare(strict_types = 1);
+
+namespace App\Database\Query_builders;
 
 abstract class QueryBuilderTemplate
 {

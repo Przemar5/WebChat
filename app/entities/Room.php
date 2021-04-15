@@ -8,6 +8,5 @@ use App\Entities\Entity;
 
 class Room extends Entity
 {
-	public final int $id;
 	public string $name;
 }

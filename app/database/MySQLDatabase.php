@@ -1,8 +1,10 @@
 <?php
 
-namespace Meetee\Libs\Database;
+declare(strict_types = 1);
 
-use Meetee\Libs\Database\DatabaseTemplate;
+namespace App\Database;
+
+use App\Database\DatabaseTemplate;
 
 class MySQLDatabase extends DatabaseTemplate
 {

@@ -9,7 +9,6 @@ use App\Entities\User;
 
 class Message extends Entity
 {
-	public final int $id;
 	public string $content;
 	public string $created_at;
 }

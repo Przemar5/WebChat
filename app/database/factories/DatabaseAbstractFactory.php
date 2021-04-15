@@ -1,14 +1,16 @@
 <?php
 
-namespace Meetee\Libs\Database\Factories;
+declare(strict_types = 1);
 
-use Meetee\Libs\Database\DatabaseTemplate;
-use Meetee\Libs\Database\MySQLDatabase;
-use Meetee\Libs\Database\PostgresDatabase;
-use Meetee\Libs\Database\Query_builders\QueryBuilderTemplate;
-use Meetee\Libs\Database\Query_builders\MySQLQueryBuilder;
-use Meetee\Libs\Database\Query_builders\PostgresQueryBuilder;
-use Meetee\Libs\Converters\Converter;
+namespace App\Database\Factories;
+
+use App\Database\DatabaseTemplate;
+use App\Database\MySQLDatabase;
+use App\Database\PostgresDatabase;
+use App\Database\Query_builders\QueryBuilderTemplate;
+use App\Database\Query_builders\MySQLQueryBuilder;
+use App\Database\Query_builders\PostgresQueryBuilder;
+use App\Utils\Converter;
 
 class DatabaseAbstractFactory
 {
