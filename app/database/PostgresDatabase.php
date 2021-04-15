@@ -59,14 +59,14 @@ class PostgresDatabase extends DatabaseTemplate
 	public function findObject(
 		string $query,
 		?array $bindings = [],
-		string $object = null
+		string $class = null
 	)
 	{
 		$this->stmt = $this->database->prepare($query);
 		$this->bind($bindings);
 		$this->stmt->execute();
 
-		return $this->stmt->fetchObject($object);
+		return $this->stmt->fetchAll(\PDO::FETCH_CLASS, $class)[0] ?? null;
 	}
 
 	public function findMany(string $query, ?array $bindings = [])
@@ -81,14 +81,14 @@ class PostgresDatabase extends DatabaseTemplate
 	public function findManyObjects(
 		string $query,
 		?array $bindings = [],
-		string $object = null
+		string $class = null
 	)
 	{
 		$this->stmt = $this->database->prepare($query);
 		$this->bind($bindings);
 		$this->stmt->execute();
 
-		return $this->stmt->fetchAll(\PDO::FETCH_CLASS, $object);
+		return $this->stmt->fetchAll(\PDO::FETCH_CLASS, $class);
 	}
 
 	public function lastInsertId(): int

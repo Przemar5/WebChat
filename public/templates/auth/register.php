@@ -7,6 +7,7 @@
 Registration
 
 <form method="POST">
+	<input type="hidden" name="<?= $token->name; ?>" value="<?= $token->value; ?>">
 	<label>
 		Login
 		<input type="text" name="login" value="<?= $_POST['login'] ?? ''; ?>">

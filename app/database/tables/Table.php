@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Database\Tables;
 
+use App\Entities\Entity;
 use App\Database\Factories\DatabaseAbstractFactory;
 use App\Database\DatabaseTemplate;
 use App\Database\Query_builders\QueryBuilderTemplate;
@@ -19,17 +20,19 @@ class Table
 	public function __construct(
 		string $name, 
 		string $class, 
-		?string $softDeleteCol
+		?string $softDeleteCol = null,
+		DatabaseTemplate $database,
+		QueryBuilderTemplate $queryBuilder
 	)
 	{
 		$this->name = $name;
 		$this->class = $class;
 		$this->softDeleteCol = $softDeleteCol;
-		$this->database = DatabaseAbstractFactory::createDatabase();
-		$this->queryBuilder = DatabaseAbstractFactory::createQueryBuilder();
+		$this->database = $database;
+		$this->queryBuilder = $queryBuilder;
 	}
 
-	public function find(array $data = []): ?Entity
+	public function find(array $data = [])
 	{
 		if (!is_null($this->softDeleteCol)) {
 			$data[$this->softDeleteCol] = false;

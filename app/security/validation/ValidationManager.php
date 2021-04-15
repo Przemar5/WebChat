@@ -111,11 +111,10 @@ class ValidationManager
 						[$this, 'validatorTemplate'], $args)) {
 						break 1;
 					}
-			echo $d[0] . '<br>';
 				}
 			}
 			catch (\Exception $e) {
-				break 1;
+				//
 			}
 		}
 		return ($this->errors === []) ? true : false;

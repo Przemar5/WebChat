@@ -5,8 +5,11 @@ declare(strict_types = 1);
 namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
+use App\Entities\User;
+use App\Entities\Token;
 use App\Entities\Factories\TokenFactory;
 use App\Security\Validation\ValidationManager;
+use App\Database\Tables\TableFactory;
 
 class RegistrationController extends Controller
 {
@@ -14,21 +17,72 @@ class RegistrationController extends Controller
 
 	public function page(): void
 	{
-		$this->view->render('auth/register');
+		$table = TableFactory::create('tokens');
+		$token = TokenFactory::generate('csrf_token', 0);
+		$table->save($token);
+		
+		$this->view->render('auth/register', [
+			'token' => $token,
+			'errors' => $this->errors,
+		]);
 	}
 
 	public function process(): void
 	{
-		if ($this->validateData()) {
-			$this->sanitizeData();
-			$this->createUser();
+		$token = $this->getTokenFromRequestByName('csrf_token');
+		$data = $this->trimSendData($_POST);
+
+		if ($this->validateToken($token) && $this->validateData($data)) {
+			$this->sanitizeData($data);
+
+			$user = $this->createUserAndGet($data);
+			$table = TableFactory::create('tokens');
+			$token = TokenFactory::generate(
+				'verification_email_token', $id);
+			$this->sendVerificationEmail($user, $token);
 		}
 		else {
 			$this->page();
 		}
 	}
 
-	private function validateData(): bool
+	private function trimSendData(array $data): array
+	{
+		$result = [];
+		
+		foreach ($data as $key => $value) {
+			$result[$key] = trim($value);
+		}
+		return $result;
+	}
+
+	private function getTokenFromRequestByName(string $name): ?Token
+	{
+		return TokenFactory::getByNameValueUserId($name, $_POST[$name]);
+	}
+
+	private function validateToken(Token $token): bool
+	{
+		$table = TableFactory::create('tokens');
+		$token = $table->find([
+			'name' => $token->name,
+			'value' => $token->value,
+			'user_id' => 0,
+		]);
+		
+		if (!$token) {
+			return false;
+		}
+		elseif ($token->expiry < date('Y-m-d H:i:s', time())) {
+			$table->delete(['id' => $token]);
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	private function validateData(array $data): bool
 	{
 		$validation = new ValidationManager();
 		$validation->setSchema([
@@ -61,16 +115,39 @@ class RegistrationController extends Controller
 				'a number and special character.'],
 			],
 		]);
-		dd($validation->validate($_POST));
+
 		if ($validation->validate($_POST)) {
-			// return true;
-			dd('ok');
+			return true;
 		}
 		else {
 			$this->errors = $validation->getErrors();
-			dd('err');
-			dd($this->errors);
-			// return false;
+			return false;
 		}
+	}
+
+	private function sanitizeData(array $data): array
+	{
+		return $data;
+	}
+
+	private function createUserAndGet(array $data): User
+	{
+		$table =  TableFactory::create('users');
+		$user = new User();
+		$user->login = $data['login'];
+		$user->email = $data['email'];
+		$user->password = $data['password'];
+		$table->save($user);
+		
+		if (!is_int($id = $table->lastInsertId())) {
+			throw new \Excpetion('Cannot add user.');
+		}
+		$user->id = $id;
+		return $user;
+	}
+
+	private function sendVerificationEmail(User $user, Token $token): void
+	{
+		
 	}
 }

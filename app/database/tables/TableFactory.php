@@ -9,18 +9,30 @@ use App\Entities\User;
 use App\Entities\Token;
 use App\Entities\Message;
 use App\Entities\Room;
+use App\Database\Factories\DatabaseAbstractFactory;
 
 class TableFactory
 {
 	public static function create(string $name): Table
 	{
 		switch ($name) {
-			case 'users': return new Table('users', User::class, 'deleted');
-			case 'tokens': return new Table('tokens', Token::class);
-			case 'messages': return new Table('messages', Message::class);
-			case 'rooms': return new Table('rooms', Room::class);
+			case 'users': return self::createDefaultTable('users', User::class, 'deleted');
+			case 'tokens': return self::createDefaultTable('tokens', Token::class);
+			case 'messages': return self::createDefaultTable('messages', Message::class);
+			case 'rooms': return self::createDefaultTable('rooms', Room::class);
 			default: throw new \Exception(
 				"Table identified by '$name' is missing.");
 		}
+	}
+
+	private static function createDefaultTable(
+		string $name, 
+		string $class, 
+		?string $deleteCol = null
+	): Table
+	{
+		$database = DatabaseAbstractFactory::createDatabase();
+		$queryBuilder = DatabaseAbstractFactory::createQueryBuilder();
+		return new Table($name, $class, $deleteCol, $database, $queryBuilder);
 	}
 }

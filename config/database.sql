@@ -5,7 +5,7 @@ CREATE TABLE users (
 	password VARCHAR (255) NOT NULL,
 	email VARCHAR (255) NOT NULL,
 	created_on TIMESTAMP NOT NULL,
-	verifid BOOLEAN DEFAULT FALSE,
+	verified BOOLEAN DEFAULT FALSE,
 	last_login TIMESTAMP,
 	deleted BOOLEAN DEFAULT FALSE
 );
@@ -48,8 +48,7 @@ CREATE TABLE tokens (
 	name VARCHAR(255) NOT NULL,
 	value VARCHAR(255) NOT NULL,
 	expiry TIMESTAMP NOT NULL,
-	user_id INT NULL,
-	FOREIGN KEY (user_id) REFERENCES users (id)
+	user_id INT NULL
 );
 
 INSERT INTO roles (name) 

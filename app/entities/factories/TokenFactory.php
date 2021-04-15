@@ -11,29 +11,30 @@ use App\Database\Tables\TableFactory;
 class TokenFactory
 {
 	public static function generate(
-		int $userId, 
 		string $name, 
-		?string $expiry = null
+		?int $userId = null, 
+		string $expiry = '+2 hours'
 	): Token
 	{
-		if (is_null($expiry)) {
-			$expiry = date('Y-m-d H:i:s', strtotime('+2 hours'));
-		}
 		$token = new Token();
 		$token->name = $name;
-		$token->value = RandomStringGenerator::generate(120);
+		$token->value = RandomStringGenerator::generate(60);
 		$token->user_id = $userId;
-		$token->expiry = $expiry;
+		$token->expiry = date('Y-m-d H:i:s', strtotime($expiry));
 
 		return $token;
 	}
 
-	public static function getFromArray(array $data): Token
+	public static function getByNameValueUserId(
+		string $name, 
+		string $value, 
+		?int $userId = null
+	): Token
 	{
 		$token = new Token();
-		$token->name = $data['token_name'];
-		$token->value = $data['token_value'];
-		$token->user_id;
+		$token->name = $name;
+		$token->value = $value;
+		$token->user_id = $userId;
 
 		return $token;
 	}
