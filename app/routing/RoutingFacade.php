@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Routing;
 
+use App\Routing\Routers\RouterFactory;
+
 class RoutingFacade
 {
 	public static function getRouteByName(string $name): Route

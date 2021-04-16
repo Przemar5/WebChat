@@ -77,7 +77,7 @@ class MySQLDatabase extends DatabaseTemplate
 		return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	public function lastInsertId(): int
+	public function lastInsertId()
 	{
 		return $this->database->lastInsertId();
 	}

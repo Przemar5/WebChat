@@ -13,3 +13,15 @@ function view(string $path, array $args = []): void
 		require $path;
 	}
 }
+
+function route(string $name, array $args = []): ?string
+{
+	$route = RoutingFacade::getRouteByName($name);
+	return ($route) ? $route->getPreparedUri($args) : null;
+}
+
+function redirect(string $name, array $args = []): void
+{
+	$router = RouterFactory::createDefault();
+	$router->redirect($name, $args);
+}

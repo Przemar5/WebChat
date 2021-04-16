@@ -74,5 +74,5 @@ abstract class DatabaseTemplate
 
 	abstract public function findMany(string $query, ?array $bindings = []);
 
-	abstract public function lastInsertId(): int;
+	abstract public function lastInsertId();
 }

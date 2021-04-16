@@ -91,7 +91,7 @@ class PostgresDatabase extends DatabaseTemplate
 		return $this->stmt->fetchAll(\PDO::FETCH_CLASS, $class);
 	}
 
-	public function lastInsertId(): int
+	public function lastInsertId()
 	{
 		return $this->database->lastInsertId();
 	}

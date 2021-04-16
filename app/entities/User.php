@@ -11,8 +11,8 @@ class User extends Entity
 	public string $login;
 	public string $password;
 	public string $email;
-	public string $created_on;
-	public string $last_login;
+	public $created_on;
+	public $last_login;
 	public bool $verified = false;
 	public bool $deleted = false;
 

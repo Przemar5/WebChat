@@ -10,6 +10,8 @@ use App\Entities\Token;
 use App\Entities\Factories\TokenFactory;
 use App\Security\Validation\ValidationManager;
 use App\Database\Tables\TableFactory;
+use App\Utils\Notification;
+use App\Emails\EmailFacade;
 
 class RegistrationController extends Controller
 {
@@ -32,18 +34,21 @@ class RegistrationController extends Controller
 		$token = $this->getTokenFromRequestByName('csrf_token');
 		$data = $this->trimSendData($_POST);
 
-		if ($this->validateToken($token) && $this->validateData($data)) {
-			$this->sanitizeData($data);
+		// if ($this->validateToken($token) && $this->validateData($data)) {
+			$data = $this->sanitizeData($data);
 
-			$user = $this->createUserAndGet($data);
+			$user = $this->createGetUser($data);
 			$table = TableFactory::create('tokens');
 			$token = TokenFactory::generate(
-				'verification_email_token', $id);
+				'verification_email_token', $user->id);
 			$this->sendVerificationEmail($user, $token);
-		}
-		else {
-			$this->page();
-		}
+			dd('ok');
+			Notification::addSuccess('Check Your mailbox for an activation email!');
+			redirect('login_page');
+		// }
+		// else {
+		// 	$this->page();
+		// }
 	}
 
 	private function trimSendData(array $data): array
@@ -130,24 +135,34 @@ class RegistrationController extends Controller
 		return $data;
 	}
 
-	private function createUserAndGet(array $data): User
+	private function createGetUser(array $data): User
 	{
 		$table =  TableFactory::create('users');
 		$user = new User();
 		$user->login = $data['login'];
 		$user->email = $data['email'];
-		$user->password = $data['password'];
+		$user->password = password_hash($data['password'], PASSWORD_DEFAULT);
 		$table->save($user);
-		
-		if (!is_int($id = $table->lastInsertId())) {
+		$id = $table->lastInsertId();
+
+		if (!is_numeric($id)) {
 			throw new \Excpetion('Cannot add user.');
 		}
-		$user->id = $id;
+		$user->id = (int) $id;
+
 		return $user;
 	}
 
 	private function sendVerificationEmail(User $user, Token $token): void
 	{
-		
+		$token = TokenFactory::generate(
+			'registration_confirm_email_token', $user->id);
+		EmailFacade::sendRegistrationConfirmEmail($user, $token);
+		dd('a');
+	}
+
+	public function verify()
+	{
+		//
 	}
 }

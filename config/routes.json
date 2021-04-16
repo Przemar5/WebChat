@@ -21,6 +21,13 @@
 		"access": ["GUEST"]
 	},
 	{
+		"pattern": "/register/verify",
+		"method": "GET",
+		"name": "registration_verify",
+		"callback": "Auth\\RegistrationController.verify",
+		"access": ["GUEST"]
+	},
+	{
 		"pattern": "register/(?<id>\\d+)",
 		"method": "GET",
 		"name": "register",

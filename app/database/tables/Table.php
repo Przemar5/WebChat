@@ -170,4 +170,9 @@ class Table
 			$this->queryBuilder->getBindings()
 		);
 	}
+
+	public function lastInsertId()
+	{
+		return $this->database->lastInsertId();
+	}
 }

@@ -80,4 +80,11 @@ class BrowserView extends View
 		}
 		return $this->sections[$name];
 	}
+
+	public function getAsString(string $path, ?array $args = []): string
+	{
+		ob_start();
+		$this->render($path, $args);
+		return ob_get_clean();
+	}
 } 
